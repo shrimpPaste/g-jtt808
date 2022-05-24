@@ -2,7 +2,6 @@ package jtt808
 
 import (
 	"encoding/hex"
-	"fmt"
 	"testing"
 
 	"github.com/mingkid/jtt808/message"
@@ -11,7 +10,7 @@ import (
 	"github.com/mingkid/jtt808/message/msgcomm"
 )
 
-func Test8001Message(t *testing.T) {
+func TestEncoder_M8001(t *testing.T) {
 	var msg message.Message[hv2013.MsgHead, bv2013.M8001]
 
 	// 不分包
@@ -23,7 +22,7 @@ func Test8001Message(t *testing.T) {
 	e := NewEncoder(&msg)
 	b, _ := e.Encode(message.CalcChecksum)
 	if r := hex.EncodeToString(b); r != "7e80010005013680179679007b0141020001f37e" {
-		t.Fatalf("消息包解析错误，应为%s，实际为%s", "7e80010005013680179679007b0141020001f37e", r)
+		t.Fatalf("消息包组包错误，应为%s，实际为%s", "7e80010005013680179679007b0141020001f37e", r)
 	}
 
 	//	分包
@@ -35,14 +34,6 @@ func Test8001Message(t *testing.T) {
 	e = NewEncoder(&msg)
 	b, _ = e.Encode(message.CalcChecksum)
 	if r := hex.EncodeToString(b); r != "7e80012005013680179679007b000100010141020001d37e" {
-		t.Fatalf("消息包分包解析错误，应为%s，实际为%s", "7e80012005013680179679007b000100010141020001d37e", r)
+		t.Fatalf("消息包分包组包错误，应为%s，实际为%s", "7e80012005013680179679007b000100010141020001d37e", r)
 	}
-}
-
-func convHEX(data []byte) {
-	result := hex.EncodeToString(data)
-	for i := 2; i <= len(data)*2; i += 2 {
-		fmt.Printf("%s ", result[i-2:i])
-	}
-	fmt.Println("")
 }

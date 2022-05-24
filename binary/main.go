@@ -17,3 +17,8 @@ func EliminateIdentityBit(data []byte) []byte {
 
 	return data
 }
+
+// EliminateChecksum 去除校验码
+func EliminateChecksum(data []byte) []byte {
+	return data[:len(data)-1]
+}

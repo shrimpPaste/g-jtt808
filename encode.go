@@ -3,12 +3,10 @@ package jtt808
 import (
 	"fmt"
 	"reflect"
-	"strconv"
-	"strings"
-
-	"github.com/mingkid/jtt808/message/head"
 
 	"github.com/mingkid/jtt808/binary"
+	"github.com/mingkid/jtt808/message/head"
+	"github.com/mingkid/jtt808/util"
 )
 
 type Encoder struct {
@@ -69,7 +67,7 @@ func (e Encoder) encode(v reflect.Value) []byte {
 		case reflect.String:
 			e.encodeString(fv.String(), ew, v.Type().Field(i))
 		case reflect.Struct:
-			e.encode(fv)
+			ew.Write(e.encode(fv))
 		case reflect.Ptr:
 			if fv.IsNil() {
 				break
@@ -82,20 +80,11 @@ func (e Encoder) encode(v reflect.Value) []byte {
 }
 
 func (e Encoder) encodeString(s string, w binary.ErrWrite, f reflect.StructField) {
-	// 获取消息struct中的Tag
-	tag, ok := f.Tag.Lookup("jtt808")
-	if !ok {
-		w.Err = fmt.Errorf("未定义数据长度")
-	}
-
 	var (
-		tagItems    = strings.Split(tag, ",")
-		t           = tagItems[1]
-		length, err = strconv.Atoi(tagItems[0])
+		t      string
+		length int
 	)
-	if err != nil {
-		w.Err = fmt.Errorf("数据长度不正确，请按照：'长度,类型'格式来设置Tag")
-	}
+	t, length, w.Err = util.Tag(f)
 
 	// 根据Tag中的定义，为string类型的数据做不同的bytes转换
 	switch t {

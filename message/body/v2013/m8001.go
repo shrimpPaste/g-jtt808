@@ -1,35 +1,35 @@
 package v2013
 
 type M8001 struct {
-	serialNumber uint16 `jtt808:""`
-	msgID        uint16 `jtt808:""`
-	result       uint8  `jtt808:""`
+	RawSerialNumber uint16 `jtt808:""`
+	RawMsgID        uint16 `jtt808:""`
+	RawResult       uint8  `jtt808:""`
 }
 
 func (m M8001) SerialNumber() uint16 {
-	return m.serialNumber
+	return m.RawSerialNumber
 }
 
 func (m M8001) MsgID() uint16 {
-	return m.msgID
+	return m.RawMsgID
 }
 
 func (m M8001) Result() M8001Result {
-	return M8001Result(m.result)
+	return M8001Result(m.RawResult)
 }
 
 func (m *M8001) SetSerialNumber(number uint16) *M8001 {
-	m.serialNumber = number
+	m.RawSerialNumber = number
 	return m
 }
 
 func (m *M8001) SetMsgID(id uint16) *M8001 {
-	m.msgID = id
+	m.RawMsgID = id
 	return m
 }
 
 func (m *M8001) SetResult(result M8001Result) *M8001 {
-	m.result = uint8(result)
+	m.RawResult = uint8(result)
 	return m
 }
 

@@ -43,7 +43,7 @@ func (w Writer) WriteBCD(s string, length int) error {
 
 func (w Writer) WriteString(str string, maxLength int, from StartingEnd) error {
 	reader := bytes.NewReader([]byte(str))
-	data, err := ioutil.ReadAll(transform.NewReader(reader, simplifiedchinese.GB18030.NewEncoder()))
+	data, err := ioutil.ReadAll(transform.NewReader(reader, simplifiedchinese.GBK.NewEncoder()))
 	if err != nil {
 		return err
 	}
