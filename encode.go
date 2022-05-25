@@ -90,6 +90,8 @@ func (e Encoder) encodeString(s string, w binary.ErrWrite, f reflect.StructField
 	switch t {
 	case "bcd":
 		w.WriteBCD(s, length)
+	case "string":
+		w.WriteString(s)
 	default:
 		w.Err = fmt.Errorf("数据类型不正确，字符串只支持STRING|BCD|BYTE，并按照'长度,类型'格式来设置Tag，如：10,BCD")
 	}

@@ -41,14 +41,22 @@ func (w Writer) WriteBCD(s string, length int) error {
 	return err
 }
 
-func (w Writer) WriteString(str string, maxLength int, from StartingEnd) error {
-	reader := bytes.NewReader([]byte(str))
-	data, err := ioutil.ReadAll(transform.NewReader(reader, simplifiedchinese.GBK.NewEncoder()))
+func (w Writer) WriteStringWithFill(s string, maxLength int, from StartingEnd) error {
+	p, err := w.encodeGBKString(s)
 	if err != nil {
 		return err
 	}
 
-	err = w.WriteData(data, maxLength, from)
+	return w.WriteData(p, maxLength, from)
+}
+
+func (w Writer) WriteString(s string) error {
+	p, err := w.encodeGBKString(s)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(p)
 	return err
 }
 
@@ -101,6 +109,11 @@ func (w Writer) writePlaceholder(difference int) error {
 		}
 	}
 	return nil
+}
+
+func (w Writer) encodeGBKString(str string) ([]byte, error) {
+	reader := bytes.NewReader([]byte(str))
+	return ioutil.ReadAll(transform.NewReader(reader, simplifiedchinese.GBK.NewEncoder()))
 }
 
 // NewWriter 创建新的JTT808数据缓冲写入对象
@@ -168,11 +181,18 @@ func (ew ErrWrite) WriteBCD(s string, length int) {
 	ew.Err = ew.W.WriteBCD(s, length)
 }
 
-func (ew ErrWrite) WriteString(s string, maxLength int, from StartingEnd) {
+func (ew ErrWrite) WriteStringWithFill(s string, maxLength int, from StartingEnd) {
 	if ew.Err != nil {
 		return
 	}
-	ew.Err = ew.W.WriteString(s, maxLength, from)
+	ew.Err = ew.W.WriteStringWithFill(s, maxLength, from)
+}
+
+func (ew ErrWrite) WriteString(s string) {
+	if ew.Err != nil {
+		return
+	}
+	ew.Err = ew.W.WriteString(s)
 }
 
 func (ew ErrWrite) writePlaceholder(d int) {
