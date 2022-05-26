@@ -18,14 +18,8 @@ func (e Encoder) Encode(calcChecksumHandle func([]byte) byte) ([]byte, error) {
 	ew := binary.ErrWrite{W: binary.NewWriter()}
 	v := reflect.ValueOf(e.message).Elem()
 
-	var (
-		hb []byte
-		bb []byte
-		bv = v.FieldByName("Body")
-		hv = v.FieldByName("Head")
-	)
-	bb = e.encode(bv)
-	hb, err := e.encodeHead(hv, uint16(len(bb)))
+	bb := e.encode(v.FieldByName("Body"))
+	hb, err := e.encodeHead(v.FieldByName("Head"), uint16(len(bb)))
 	if err != nil {
 		return nil, err
 	}
