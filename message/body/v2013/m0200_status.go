@@ -1,5 +1,7 @@
 package v2013
 
+import "fmt"
+
 type M0200Status uint32
 
 // ACCOn ACC开
@@ -30,6 +32,18 @@ func (s M0200Status) IsOperation() bool {
 // IsEncrypt 加密
 func (s M0200Status) IsEncrypt() bool {
 	return ((s >> 5) & 0x01) == 1
+}
+
+func (s M0200Status) PassengerVolume() string {
+	bit8 := "0"
+	bit9 := "0"
+	if ((s >> 8) & 0x01) == 1 {
+		bit8 = "1"
+	}
+	if ((s >> 9) & 0x01) == 1 {
+		bit9 = "1"
+	}
+	return fmt.Sprintf("%s%s", bit9, bit8)
 }
 
 // IsOilChannelNormal 油路正常
