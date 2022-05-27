@@ -116,8 +116,8 @@ func TestDecoder_M0200(t *testing.T) {
 	if msg.Body.Direction() != 150 {
 		t.Fatalf("消息包方向解析错误，应为%d，实际为%d", 0, msg.Body.Direction())
 	}
-	if time, _ := time.Parse(time.RFC3339, "2022-03-24T12:25:35"); msg.Body.Time() != time {
-		t.Fatalf("消息包时间解析错误，应为%v，实际为%v", time, msg.Body.Time())
+	if time0200, _ := time.Parse(time.RFC3339, "2022-03-24T12:25:35"); msg.Body.Time() != time0200 {
+		t.Fatalf("消息包时间解析错误，应为%v，实际为%v", time0200, msg.Body.Time())
 	}
 	if msg.Body.Status.ACCOn() != true {
 		t.Fatalf("消息包状态ACC解析错误，应为%t，实际为%t", true, msg.Body.Status.ACCOn())
