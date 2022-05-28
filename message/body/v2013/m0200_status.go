@@ -2,7 +2,6 @@ package v2013
 
 import (
 	"fmt"
-	"github.com/mingkid/jtt808/message/msgcomm"
 )
 
 type M0200Status uint32
@@ -37,7 +36,7 @@ func (s M0200Status) IsEncrypt() bool {
 	return ((s >> 5) & 0x01) == 1
 }
 
-func (s M0200Status) IsFullLoad() msgcomm.LoadStatus {
+func (s M0200Status) LoadStatus() LoadStatus {
 	bit8 := "0"
 	bit9 := "0"
 	if ((s >> 8) & 0x01) == 1 {
@@ -47,7 +46,7 @@ func (s M0200Status) IsFullLoad() msgcomm.LoadStatus {
 		bit9 = "1"
 	}
 	status := fmt.Sprintf("%s%s", bit9, bit8)
-	return msgcomm.GetStatus(status)
+	return LoadStatusMap[status]
 }
 
 // IsOilChannelNormal 油路正常
