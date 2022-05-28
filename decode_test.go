@@ -85,7 +85,7 @@ func TestDecoder_M0102(t *testing.T) {
 func TestDecoder_M0200(t *testing.T) {
 	var msg message.Message[hv2013.MsgHead, bv2013.M0200]
 	d := NewDecoder(&msg)
-	_ = d.Decode([]byte{126, 2, 0, 0, 56, 1, 48, 81, 25, 38, 117, 0, 10, 0, 0, 0, 0, 0, 12, 1, 3, 2, 127, 135, 26, 7, 79, 186, 202, 0, 0, 0, 116, 0, 150, 34, 3, 36, 18, 37, 53, 1, 4, 0, 0, 9, 186, 43, 4, 5, 193, 5, 193, 48, 1, 29, 49, 1, 29, 0, 4, 0, 206, 5, 193, 3, 2, 0, 116, 202, 126})
+	_ = d.Decode([]byte{126, 2, 0, 0, 56, 1, 48, 81, 25, 38, 117, 0, 10, 0, 0, 0, 0, 0, 12, 0, 3, 2, 127, 135, 26, 7, 79, 186, 202, 0, 0, 0, 116, 0, 150, 34, 3, 36, 18, 37, 53, 1, 4, 0, 0, 9, 186, 43, 4, 5, 193, 5, 193, 48, 1, 29, 49, 1, 29, 0, 4, 0, 206, 5, 193, 3, 2, 0, 116, 202, 126})
 	if msg.Head.ID() != msgcomm.TermLocationRepose {
 		t.Fatalf("消息包ID解析错误，应为%d，实际为%d", msgcomm.TermLocationRepose, msg.Head.ID())
 	}
@@ -137,8 +137,8 @@ func TestDecoder_M0200(t *testing.T) {
 	if msg.Body.Status.IsEncrypt() != false {
 		t.Fatalf("消息包状态经纬度加密解析错误，应为%t，实际为%t", false, msg.Body.Status.IsEncrypt())
 	}
-	if msg.Body.Status.PassengerVolume() != "01" {
-		t.Fatalf("车载状态解析错误，应为%s，实际为%s", "01", msg.Body.Status.PassengerVolume())
+	if msg.Body.Status.IsFullLoad() != msgcomm.NoLoad {
+		t.Fatalf("车载状态解析错误，应为%s，实际为%s", msgcomm.NoLoad, msg.Body.Status.IsFullLoad())
 	}
 	if msg.Body.Status.IsOilChannelNormal() != true {
 		t.Fatalf("消息包状态油路解析错误，应为%t，实际为%t", true, msg.Body.Status.IsOilChannelNormal())

@@ -1,6 +1,9 @@
 package v2013
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/mingkid/jtt808/message/msgcomm"
+)
 
 type M0200Status uint32
 
@@ -34,7 +37,7 @@ func (s M0200Status) IsEncrypt() bool {
 	return ((s >> 5) & 0x01) == 1
 }
 
-func (s M0200Status) PassengerVolume() string {
+func (s M0200Status) IsFullLoad() msgcomm.LoadStatus {
 	bit8 := "0"
 	bit9 := "0"
 	if ((s >> 8) & 0x01) == 1 {
@@ -43,7 +46,8 @@ func (s M0200Status) PassengerVolume() string {
 	if ((s >> 9) & 0x01) == 1 {
 		bit9 = "1"
 	}
-	return fmt.Sprintf("%s%s", bit9, bit8)
+	status := fmt.Sprintf("%s%s", bit9, bit8)
+	return msgcomm.GetStatus(status)
 }
 
 // IsOilChannelNormal 油路正常
