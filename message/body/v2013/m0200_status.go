@@ -2,25 +2,10 @@ package v2013
 
 import (
 	"fmt"
+	"github.com/mingkid/jtt808/message/body/v2013/extra0200"
 )
 
 type M0200Status uint32
-
-type LoadStatus string
-
-const (
-	NoLoad   LoadStatus = "00"
-	HalfLoad            = "01"
-	HoldLoad            = "10"
-	FullLoad            = "11"
-)
-
-var LoadStatusMap = map[string]LoadStatus{
-	"00": NoLoad,
-	"01": HalfLoad,
-	"10": HoldLoad,
-	"11": FullLoad,
-}
 
 // ACCOn ACC开
 func (s M0200Status) ACCOn() bool {
@@ -52,7 +37,7 @@ func (s M0200Status) IsEncrypt() bool {
 	return ((s >> 5) & 0x01) == 1
 }
 
-func (s M0200Status) LoadStatus() LoadStatus {
+func (s M0200Status) LoadStatus() extra0200.LoadStatus {
 	bit8 := "0"
 	bit9 := "0"
 	if ((s >> 8) & 0x01) == 1 {
@@ -62,7 +47,7 @@ func (s M0200Status) LoadStatus() LoadStatus {
 		bit9 = "1"
 	}
 	status := fmt.Sprintf("%s%s", bit9, bit8)
-	return LoadStatusMap[status]
+	return extra0200.LoadStatusMap[status]
 }
 
 // IsOilChannelNormal 油路正常
