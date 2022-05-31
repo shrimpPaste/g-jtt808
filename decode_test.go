@@ -139,7 +139,7 @@ func TestDecoder_M0200(t *testing.T) {
 		t.Fatalf("消息包状态经纬度加密解析错误，应为%t，实际为%t", false, msg.Body.Status.IsEncrypt())
 	}
 	if msg.Body.Status.LoadStatus() != extra0200.NoLoad {
-		t.Fatalf("车载状态解析错误，应为%s，实际为%s", extra0200.NoLoad, msg.Body.Status.LoadStatus())
+		t.Fatalf("车载状态解析错误，应为%d，实际为%d", extra0200.NoLoad, msg.Body.Status.LoadStatus())
 	}
 	if msg.Body.Status.IsOilChannelNormal() != true {
 		t.Fatalf("消息包状态油路解析错误，应为%t，实际为%t", true, msg.Body.Status.IsOilChannelNormal())

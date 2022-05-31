@@ -1,7 +1,6 @@
 package v2013
 
 import (
-	"fmt"
 	"github.com/mingkid/jtt808/message/body/v2013/extra0200"
 )
 
@@ -38,15 +37,17 @@ func (s M0200Status) IsEncrypt() bool {
 }
 
 func (s M0200Status) LoadStatus() extra0200.LoadStatus {
-	bit8 := "0"
-	bit9 := "0"
-	if ((s >> 8) & 0x01) == 1 {
-		bit8 = "1"
+	bit8 := ((s >> 8) & 0x01) == 1
+	bit9 := ((s >> 9) & 0x01) == 1
+	status := 00
+
+	if bit8 {
+		status += 1
 	}
-	if ((s >> 9) & 0x01) == 1 {
-		bit9 = "1"
+	if bit9 {
+		status += 10
 	}
-	status := fmt.Sprintf("%s%s", bit9, bit8)
+
 	return extra0200.LoadStatusMap[status]
 }
 
