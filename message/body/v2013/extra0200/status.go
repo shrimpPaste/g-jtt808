@@ -6,10 +6,9 @@ type VehSignalStatus uint32
 type LoadStatus int
 
 const (
-	NoLoad   LoadStatus = 00
-	HalfLoad            = 01
-	HoldLoad            = 10
-	FullLoad            = 11
+	NoLoad   LoadStatus = 0
+	HalfLoad            = 1
+	FullLoad            = 3
 )
 
 var LoadStatusMap = map[int]LoadStatus{
